@@ -92,10 +92,11 @@ class BaseClient(object):
         """
         Make a POST request.
         """
-
         data = {}
         data.update(kwargs.get('data') or {})
         kwargs['data'] = data
+        print(self._default_data())
+        kwargs['data'].update(self._default_data())
         return self._request(requests.post, *args, **kwargs)
 
     def _construct_url(self, url, base, quote):
@@ -119,14 +120,14 @@ class BaseClient(object):
 
         return_json = kwargs.pop('return_json', False)
         url = self.api_url[version] + url
+        print(url, args, kwargs)
         response = func(url, *args, **kwargs)
-
+        print(response)
         if 'proxies' not in kwargs:
             kwargs['proxies'] = self.proxydict
 
         # Check for error, raising an exception if appropriate.
         response.raise_for_status()
-
         try:
             json_response = response.json()
         except ValueError:
@@ -143,7 +144,6 @@ class BaseClient(object):
                 raise BitstampError(
                     "Could not decode json for: " + response.text)
             return json_response
-
         return response
 
 class TradingClient(BaseClient):
@@ -184,7 +184,8 @@ class TradingClient(BaseClient):
         POST request to the Bitstamp API.
         """
 
-        data = super(TradingClient, self)._default_data(*args, **kwargs)
+        #data = super(TradingClient, self)._default_data(*args, **kwargs)
+        data = {}
         data['key'] = self.key
         nonce = self.get_nonce()
         msg = str(nonce) + self.username + self.key

@@ -38,7 +38,8 @@ def action(name):
                 try: # Tries to pull account balance; if fails, then invalid creds
                     client.account_balance()
                     logged_in = True
-                except:
+                except Exception as e:
+                    print(e)
                     logged_in = False
 
                 config_dict["logged_in"] = logged_in

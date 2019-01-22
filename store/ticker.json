@@ -1,4 +1,10 @@
 {
   "error": false,
-  "data": {}
+  "data": {
+    "last": 3581.79,
+    "high": 3615.8,
+    "low": 3401.36,
+    "open": 3531.51,
+    "volume": 7116.4
+  }
 }
